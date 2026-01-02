@@ -1,0 +1,24 @@
+# 忽略构建目录
+/build/
+
+# VSCode 工作区文件
+.vscode/
+
+# 临时文件
+*.log
+*.tmp
+
+# 编译生成的中间文件
+*.o
+*.a
+*.so
+
+# 其它文件
+*.txt
+.git
+u_source/
+tests/
+
+# 系统文件
+.DS_Store
+Thumbs.db
