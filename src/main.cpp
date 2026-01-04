@@ -1,6 +1,8 @@
 #include <iostream>
 #include "lexer.h"
 #include "myparser.h"
+# include "intercode.h"
+# include "asmgen.h"
 
 // 打印工具：支持所有节点类型
 void printAST(ASTNode* node, int level = 0) {
@@ -116,6 +118,15 @@ int main() {
     cout << "\nGenerated AST Structure:" << endl;
     cout << "========================" << endl;
     printAST(root);
+
+    // 生成中间代码
+    InterCodeGenerator interGen;
+    interGen.generate(root);
+    interGen.printCodes();
+
+    // 生成汇编代码
+    AsmGenerator asmGen(interGen.getCodes());
+    asmGen.generate("output.asm");
 
     return 0;
 }
