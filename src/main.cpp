@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include "lexer.h"
 #include "myparser.h"
 # include "intercode.h"
@@ -88,26 +90,34 @@ void printAST(ASTNode* node, int level = 0) {
     }
 }
 
-int main() {
-    // === 终极测试用例 ===
-    // 包含函数、If、While、代码块、复杂运算
-    string code = R"(
-        int main() {
-            int a = 10;
-            int b = 5;
-            if (a + b) {
-                a = a + 1;
-            } else {
-                b = 0;
-            }
-            while (b) {
-                b = b - 1;
-            }
-            return a;
-        }
-    )";
+int main(int argc, char* argv[]) {
+    // 检查命令行参数
+    if (argc < 2) {
+        cerr << "Usage: " << argv[0] << " <source_file>" << endl;
+        cerr << "Example: " << argv[0] << " program.txt" << endl;
+        return 1;
+    }
+
+    string filename = argv[1];
     
-    cout << "=== Final Compiler Frontend Test ===" << endl;
+    // 读取源代码文件
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cerr << "Error: Cannot open file '" << filename << "'" << endl;
+        return 1;
+    }
+
+    stringstream buffer;
+    buffer << file.rdbuf();
+    string code = buffer.str();
+    file.close();
+
+    if (code.empty()) {
+        cerr << "Warning: File is empty" << endl;
+        return 1;
+    }
+
+    cout << "Source File: " << filename << endl;
     cout << "Parsing Source Code..." << endl;
 
     Lexer lexer(code);
@@ -118,15 +128,19 @@ int main() {
     cout << "\nGenerated AST Structure:" << endl;
     cout << "========================" << endl;
     printAST(root);
+    cout << endl;
 
     // 生成中间代码
     InterCodeGenerator interGen;
     interGen.generate(root);
+    cout << "\nGenerated Intermediate Code:" << endl;
+    cout << "==============================" << endl;
     interGen.printCodes();
 
     // 生成汇编代码
     AsmGenerator asmGen(interGen.getCodes());
     asmGen.generate("output.asm");
+    cout << "\nCompilation completed successfully!" << endl;
 
     return 0;
 }

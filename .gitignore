@@ -19,6 +19,7 @@
 u_source/
 tests/
 *.asm
+sources/
 
 # 系统文件
 .DS_Store
