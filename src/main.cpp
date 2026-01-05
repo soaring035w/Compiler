@@ -140,7 +140,7 @@ int main(int argc, char* argv[]) {
     // 生成汇编代码
     AsmGenerator asmGen(interGen.getCodes());
     asmGen.generate("output.asm");
-    cout << "\nCompilation completed successfully!" << endl;
+    cout << "Compilation completed successfully!" << endl;
 
     return 0;
 }
