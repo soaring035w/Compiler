@@ -21,6 +21,7 @@ const vector<Quad>& InterCodeGenerator::getCodes() const {
     return codes;
 }
 
+// 递归生成表达式的中间代码，返回结果临时变量名（a+b +c）
 string InterCodeGenerator::genExpr(ExprNode* node) {
     if (!node) return "";
     
@@ -52,11 +53,13 @@ void InterCodeGenerator::genNode(ASTNode* node) {
     if (!node) return;
 
     switch (node->nodeType) {
+        // 根结点
         case NODE_PROGRAM: {
             ProgramNode* prog = (ProgramNode*)node;
             for (auto el : prog->elements) genNode(el);
             break;
         }
+        // 函数节点
         case NODE_FUNC_DEF: {
             FuncDef* func = (FuncDef*)node;
             emit(OP_FUNC_BEGIN, "", "", func->funcName);
@@ -72,26 +75,27 @@ void InterCodeGenerator::genNode(ASTNode* node) {
         case NODE_VAR_DECL: {
             VarDeclStmt* decl = (VarDeclStmt*)node;
             if (decl->initVal) {
-                string val = genExpr(decl->initVal);
+                string val = genExpr(decl->initVal); // 得到初始化表达式的结果
                 emit(OP_ASSIGN, val, "", decl->name);
             }
             break;
         }
         case NODE_ASSIGN_STMT: {
             AssignStmt* assign = (AssignStmt*)node;
-            string val = genExpr(assign->value);
+            string val = genExpr(assign->value); // 得到右侧表达式的结果
             emit(OP_ASSIGN, val, "", assign->varName);
             break;
         }
         case NODE_RETURN_STMT: {
             ReturnStmt* ret = (ReturnStmt*)node;
-            string val = genExpr(ret->retVal);
+            string val = genExpr(ret->retVal); // 得到返回值表达式的结果
             emit(OP_RETURN, val, "", "");
             break;
         }
         case NODE_IF_STMT: {
             IfStmt* stmt = (IfStmt*)node;
             string cond = genExpr(stmt->cond);
+            // 产生跳转标签
             string lblElse = newLabel();
             string lblEnd = newLabel();
             
@@ -131,7 +135,7 @@ void InterCodeGenerator::generate(ASTNode* root) {
 }
 
 void InterCodeGenerator::printCodes() {
-    // 调试代码
+    // 打印中间代码，调试用
     for (auto& q : codes) {
         cout << q.op << " " << q.arg1 << " " << q.arg2 << " " << q.result << endl;
     }

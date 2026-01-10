@@ -19,7 +19,7 @@ private:
     int currentStackSize;
 
     // 寄存器描述符: 记录哪个变量在哪个寄存器
-    string regContent[32]; 
+    string regContent[32];
     map<string, int> varInReg;
 
     // 寄存器池

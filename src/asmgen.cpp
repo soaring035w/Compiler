@@ -27,6 +27,7 @@ bool AsmGenerator::isNumber(string s) {
     return isdigit(s[0]) || (s[0] == '-' && s.size() > 1);
 }
 
+// 获取变量在栈上的偏移地址
 int AsmGenerator::getOffset(string var) {
     if (stackOffset.find(var) == stackOffset.end()) {
         currentStackSize += 4;
@@ -57,7 +58,7 @@ void AsmGenerator::emitImm(int reg, int val, ofstream& out) {
 void AsmGenerator::spillAll() {
     for (int i = 0; i < 32; ++i) regContent[i] = "";
     varInReg.clear();
-    nextVictimIndex = 0; 
+    nextVictimIndex = 0;
 }
 
 int AsmGenerator::getReg(string var) {
