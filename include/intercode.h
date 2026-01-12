@@ -24,10 +24,10 @@ enum QuadOp {
 
 // 四元式结构
 struct Quad {
-    QuadOp op;
-    string arg1;
-    string arg2;
-    string result;
+    QuadOp op; // 操作符
+    string arg1; // 第一个参数
+    string arg2; // 第二个参数
+    string result; // 结果/目标/标签
 
     Quad(QuadOp o, string a1, string a2, string res) 
         : op(o), arg1(a1), arg2(a2), result(res) {}
@@ -35,16 +35,16 @@ struct Quad {
 
 class InterCodeGenerator {
 private:
-    vector<Quad> codes;
-    int tempCount = 0;
-    int labelCount = 0;
+    vector<Quad> codes; // 生成的四元式列表
+    int tempCount = 0; // 临时变量计数器，用于生成唯一临时变量名
+    int labelCount = 0; // 标签计数器，用于生成唯一标签名
 
-    string newTemp();
-    string newLabel();
-    void emit(QuadOp op, string arg1, string arg2, string result);
+    string newTemp(); // 生成新的临时变量名
+    string newLabel(); // 生成新的标签名
+    void emit(QuadOp op, string arg1, string arg2, string result); // 添加四元式到codes
 
-    void genNode(ASTNode* node);
-    string genExpr(ExprNode* node);
+    void genNode(ASTNode* node); // 生成节点的中间代码
+    string genExpr(ExprNode* node); //  生成表达式的中间代码
 
 public:
     InterCodeGenerator();

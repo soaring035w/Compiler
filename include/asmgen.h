@@ -33,8 +33,8 @@ private:
     int getOffset(string var); // 获取相对于 SP 的偏移
     
     // 寄存器分配
-    int getReg(string var);      
-    void spillAll();             
+    int getReg(string var);
+    void spillAll();
     
     // 输出指令辅助
     void emitImm(int reg, int val, ofstream& out);

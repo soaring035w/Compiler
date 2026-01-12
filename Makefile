@@ -8,7 +8,7 @@ BIN_DIR := build/bin
 SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp)
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 
-TARGET := $(BIN_DIR)/complier_test
+TARGET := $(BIN_DIR)/compiler
 
 # 跨平台 mkdir
 ifeq ($(OS),Windows_NT)
